@@ -14,29 +14,30 @@ func startRepl() {
 		//fmt.Print("Pokedex >")
 		prompt()
 		reader.Scan()
-		words := cleanInput(reader.Text())
-		if len(words) == 0 {
+		cleaned := cleanInput(reader.Text())
+		if len(cleaned) == 0 {
 			continue
 		}
-		commandName := words[0]
+		commandName := cleaned[0]
 
-		command, exists := getCommands()[commandName]
-		if exists {
-			err := command.callback()
-			if err != nil {
-				fmt.Println(err)
-			}
-		} else {
+		availableCommands := getCommands()
+
+		command, ok := availableCommands[commandName]
+		if !ok {
 			fmt.Println("Unknown command")
 			continue
+		}
+		err := command.callback()
+		if err != nil {
+			fmt.Println(err)
 		}
 	}
 }
 
 // cleanInput parses inputs from the REPL prompt.
 func cleanInput(text string) []string {
-	output := strings.ToLower(text)
-	words := strings.Fields(output)
+	lowered := strings.ToLower(text)
+	words := strings.Fields(lowered)
 	return words
 }
 
@@ -58,6 +59,16 @@ func getCommands() map[string]cliCommand {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
+		},
+		"map": {
+			name:        "map",
+			description: "map forward",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "mapb backward",
+			callback:    commandMapb,
 		},
 	}
 }
