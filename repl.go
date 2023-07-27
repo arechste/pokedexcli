@@ -63,12 +63,12 @@ func getCommands() map[string]cliCommand {
 		"map": {
 			name:        "map",
 			description: "map forward",
-			callback:    commandMap,
+			callback:    callbackMap,
 		},
 		"mapb": {
 			name:        "mapb",
 			description: "mapb backward",
-			callback:    commandMapb,
+			callback:    callbackMapb,
 		},
 	}
 }
