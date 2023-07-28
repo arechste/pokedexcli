@@ -2,7 +2,6 @@ package pokeapi
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -23,7 +22,7 @@ func (c *Client) ListLocationAreas() (LocationAreasResp, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode > 399 {
-		return LocationAreasResp{}, fmt.Errorf("bad status code: %v", resp.StatusCode)
+		return LocationAreasResp{}, err
 	}
 
 	data, err := io.ReadAll(resp.Body)
