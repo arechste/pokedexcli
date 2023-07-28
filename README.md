@@ -1,3 +1,3 @@
 # pokedexcli
 
-# Coding execise early Draft
+# Coding exercise early Draft
