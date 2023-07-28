@@ -27,8 +27,7 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 		}
 		return locationAreasResp, nil
 	}
-	fmt.Println("cache miss!")
-
+	// cache miss call the Api
 	req, err := http.NewRequest("GET", fullURL, nil)
 	if err != nil {
 		return LocationAreasResp{}, err
@@ -40,9 +39,8 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(resp.StatusCode)
-
 	if resp.StatusCode > 399 {
+		err = fmt.Errorf("http.Status: '%v'", resp.Status)
 		return LocationAreasResp{}, err
 	}
 
@@ -70,7 +68,6 @@ func (c *Client) GetLocationArea(locationAreaName string) (LocationArea, error) 
 	dat, ok := c.cache.Get(fullURL)
 	if ok {
 		// cache hit
-		fmt.Println("cache hit!")
 		locationArea := LocationArea{}
 		err := json.Unmarshal(dat, &locationArea)
 		if err != nil {
@@ -78,7 +75,7 @@ func (c *Client) GetLocationArea(locationAreaName string) (LocationArea, error) 
 		}
 		return locationArea, nil
 	}
-	fmt.Println("cache miss!")
+	// cache miss call Api
 
 	req, err := http.NewRequest("GET", fullURL, nil)
 	if err != nil {
@@ -91,9 +88,8 @@ func (c *Client) GetLocationArea(locationAreaName string) (LocationArea, error) 
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(resp.StatusCode)
-
 	if resp.StatusCode > 399 {
+		err = fmt.Errorf("http.Status: '%v'", resp.Status)
 		return LocationArea{}, err
 	}
 
