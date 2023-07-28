@@ -20,12 +20,12 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 	if ok {
 		// cache hit
 		fmt.Println("cache hit!")
-		locationAreaResp := LocationAreasResp{}
-		err := json.Unmarshal(dat, &locationAreaResp)
+		locationAreasResp := LocationAreasResp{}
+		err := json.Unmarshal(dat, &locationAreasResp)
 		if err != nil {
 			return LocationAreasResp{}, err
 		}
-		return locationAreaResp, nil
+		return locationAreasResp, nil
 	}
 	fmt.Println("cache miss!")
 
@@ -49,13 +49,62 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 		return LocationAreasResp{}, err
 	}
 
-	locationAreaResp := LocationAreasResp{}
-	err = json.Unmarshal(dat, &locationAreaResp)
+	locationAreasResp := LocationAreasResp{}
+	err = json.Unmarshal(dat, &locationAreasResp)
 	if err != nil {
 		return LocationAreasResp{}, err
 	}
 	// cache miss polulate cache before return resp
 	//fmt.Println(string(dat))
 	c.cache.Add(fullURL, dat)
-	return locationAreaResp, nil
+	return locationAreasResp, nil
+}
+
+func (c *Client) GetLocationArea(locationAreaName string) (LocationArea, error) {
+	endpoint := "/location-area" + "/" + locationAreaName
+	fullURL := baseUrl + endpoint
+
+	// check the cache
+	dat, ok := c.cache.Get(fullURL)
+	if ok {
+		// cache hit
+		fmt.Println("cache hit!")
+		locationArea := LocationArea{}
+		err := json.Unmarshal(dat, &locationArea)
+		if err != nil {
+			return LocationArea{}, err
+		}
+		return locationArea, nil
+	}
+	fmt.Println("cache miss!")
+
+	req, err := http.NewRequest("GET", fullURL, nil)
+	if err != nil {
+		return LocationArea{}, err
+	}
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return LocationArea{}, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode > 399 {
+		return LocationArea{}, err
+	}
+
+	dat, err = io.ReadAll(resp.Body)
+	if err != nil {
+		return LocationArea{}, err
+	}
+
+	locationArea := LocationArea{}
+	err = json.Unmarshal(dat, &locationArea)
+	if err != nil {
+		return LocationArea{}, err
+	}
+	// cache miss polulate cache before return resp
+	//fmt.Println(string(dat))
+	c.cache.Add(fullURL, dat)
+	return locationArea, nil
 }
