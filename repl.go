@@ -62,12 +62,12 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			name:        "map",
-			description: "List Location Map Forward",
+			description: "List Location Map next",
 			callback:    callbackMap,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "List Location Map backward",
+			description: "List Location Map previous",
 			callback:    callbackMapb,
 		},
 	}
