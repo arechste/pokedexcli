@@ -40,6 +40,8 @@ func (c *Client) ListLocationAreas(pageURL *string) (LocationAreasResp, error) {
 	}
 	defer resp.Body.Close()
 
+	fmt.Println(resp.StatusCode)
+
 	if resp.StatusCode > 399 {
 		return LocationAreasResp{}, err
 	}
@@ -88,6 +90,8 @@ func (c *Client) GetLocationArea(locationAreaName string) (LocationArea, error) 
 		return LocationArea{}, err
 	}
 	defer resp.Body.Close()
+
+	fmt.Println(resp.StatusCode)
 
 	if resp.StatusCode > 399 {
 		return LocationArea{}, err

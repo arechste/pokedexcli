@@ -37,6 +37,7 @@ func (c *Client) GetPokemon(pokemonName string) (Pokemon, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode > 399 {
+		err = fmt.Errorf("http.StatusCode: '%v' '%v'", resp.StatusCode, resp.Status)
 		return Pokemon{}, err
 	}
 

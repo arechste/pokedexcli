@@ -12,6 +12,7 @@ type LocationAreasResp struct {
 	} `json:"results"`
 }
 
+// Location Area
 type LocationArea struct {
 	EncounterMethodRates []struct {
 		EncounterMethod struct {

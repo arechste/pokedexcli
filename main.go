@@ -6,16 +6,15 @@ import (
 	"github.com/arechste/pokedexcli/internal/pokeapi"
 )
 
-type config struct {
-	pokeapiClient           pokeapi.Client
-	nextLocationAreaURL     *string
-	previousLocationAreaURL *string
-	caughtPokemon           map[string]pokeapi.Pokemon
-}
+// timeout is time for apiClient timeout.
+const timeout = 5 * time.Second
+
+// interval is time for cache flush interval
+const interval = 5 * time.Minute
 
 func main() {
 	cfg := config{
-		pokeapiClient: pokeapi.NewClient(time.Hour),
+		pokeapiClient: pokeapi.NewClient(timeout, interval),
 		caughtPokemon: make(map[string]pokeapi.Pokemon),
 	}
 	startRepl(&cfg)

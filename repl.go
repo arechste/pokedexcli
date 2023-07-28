@@ -5,7 +5,16 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/arechste/pokedexcli/internal/pokeapi"
 )
+
+type config struct {
+	pokeapiClient           pokeapi.Client
+	nextLocationAreaURL     *string
+	previousLocationAreaURL *string
+	caughtPokemon           map[string]pokeapi.Pokemon
+}
 
 // startRepl starts the cli REPL.
 func startRepl(cfg *config) {
