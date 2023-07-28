@@ -8,7 +8,7 @@ import (
 )
 
 func (c *Client) GetPokemon(pokemonName string) (Pokemon, error) {
-	endpoint := "/pokemon" + "/" + pokemonName
+	endpoint := "/pokemon/" + pokemonName
 	fullURL := baseUrl + endpoint
 
 	// check the cache
@@ -21,7 +21,7 @@ func (c *Client) GetPokemon(pokemonName string) (Pokemon, error) {
 		if err != nil {
 			return Pokemon{}, err
 		}
-		return Pokemon{}, nil
+		return pokemon, nil
 	}
 	fmt.Println("cache miss!")
 
