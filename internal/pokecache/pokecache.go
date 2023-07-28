@@ -21,16 +21,16 @@ func NewCache(interval time.Duration) Cache {
 	return c
 }
 
-func (c *Cache) Add(key string, val []byte) {
+func (c *Cache) Add(key string, value []byte) {
 	c.cache[key] = cacheEntry{
-		val:       val,
+		val:       value,
 		createdAt: time.Now().UTC(),
 	}
 }
 
 func (c *Cache) Get(key string) ([]byte, bool) {
-	ce, ok := c.cache[key]
-	return ce.val, ok
+	val, ok := c.cache[key]
+	return val.val, ok
 }
 
 func (c *Cache) reapLoop(interval time.Duration) {
